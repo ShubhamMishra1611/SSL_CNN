@@ -13,4 +13,4 @@ This project has three notebooks:
 2. Visualization_n_data.ipynb: This notebook is used to visualize and understand the data.
 3. CNN_model_testing.ipynb: This notebook is used to test the model.
 
-You can find the dataset in the data folder.
+You can find the dataset from the following link:
