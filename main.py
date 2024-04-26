@@ -35,36 +35,6 @@ logging.basicConfig(filename='ssl_log.log', level=logging.DEBUG, format='%(ascti
 
 # get the list of audio files and sort them
 logging.info('Getting the list of audio files and sorting them...')
-audiofiles = [str(file) for file in Path().glob('SA*.wav')]
-audiofiles = sorted_nicely(audiofiles)
-
-
-if DEBUG:
-    print("Selecting Random files from the audio files...")
-    print(random.choices(audiofiles, k=10))
-
-# Exctracting audio for the duration of 500 ms with respective labels
-sr = 16000
-duration = 0.5
-
-audioMatrix, sourceIDs, labels30, labels10 = extractAudiodata(audiofiles, sr*duration)
-
-logging.info(f'audioMatrix has shape {audioMatrix.shape} where {audioMatrix.shape[0]} is length in samples, {audioMatrix.shape[1]} are the microphones and {audioMatrix.shape[2]} are the number of setences')
-
-print('audioMatrix has shape {} where {} is length in samples, {} are the microphones and {} are the number of setences'.format(audioMatrix.shape, audioMatrix.shape[0], audioMatrix.shape[1], audioMatrix.shape[2]))
-
-logging.info(f'sourceIDs is an array of length {sourceIDs.shape[0]}, one for each sentence')
-print('labels10 is an array of length {}, one for each sentence\n'.format(labels10.shape[0]))
-
-logging.info(f'plotting the audio signals...')
-plt.figure(figsize=(15, 10))
-time_axis = np.arange(0,sr*duration) / sr
-for i in range(0, 10):
-  plt.subplot(5, 2, i+1)
-  plt.plot(time_axis, audioMatrix[:,0,i])
-
-gamma = featureExtractor2(audioMatrix[:,:,0])
-
 
 # Get list of audio files in the train dataset
 audiofiles_train = [str(file) for file in Path().glob('SA*.wav')]
@@ -141,7 +111,7 @@ callbacks = [
 (Gamma_container_val, intValLabels10) = shuffle(Gamma_container_val, intValLabels10)
 
 
-history = model.fit(Gamma_container, intLabels10, validation_data=(Gamma_container_val, intValLabels10),  epochs=400, callbacks=callbacks)
+history = model.fit(Gamma_container, intLabels10, validation_data=(Gamma_container_val, intValLabels10),  epochs=10, callbacks=callbacks)
 
 logging.info('saving the model...')
 model.save('model')
